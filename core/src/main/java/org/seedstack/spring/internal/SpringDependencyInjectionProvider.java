@@ -5,8 +5,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package org.seedstack.spring.internal;
 
+package org.seedstack.spring.internal;
 
 import com.google.inject.Module;
 import io.nuun.kernel.api.di.UnitModule;
@@ -19,7 +19,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 class SpringDependencyInjectionProvider implements DependencyInjectionProvider {
     @Override
     public boolean canHandle(Class<?> injectionDefinition) {
-        return ConfigurableListableBeanFactory.class.isAssignableFrom(injectionDefinition) || ConfigurableApplicationContext.class.isAssignableFrom(injectionDefinition);
+        return ConfigurableListableBeanFactory.class.isAssignableFrom(injectionDefinition) || ConfigurableApplicationContext.class
+                .isAssignableFrom(injectionDefinition);
     }
 
     @Override
@@ -32,13 +33,14 @@ class SpringDependencyInjectionProvider implements DependencyInjectionProvider {
         return null;
     }
 
-    static Module buildModuleFromSpringContext(Object injectionDefinition) {
+    private static Module buildModuleFromSpringContext(Object injectionDefinition) {
         if (injectionDefinition instanceof ConfigurableListableBeanFactory) {
             return new SpringModule((ConfigurableListableBeanFactory) injectionDefinition);
         } else if (injectionDefinition instanceof ConfigurableApplicationContext) {
             return new SpringModule(((ConfigurableApplicationContext) injectionDefinition).getBeanFactory());
         } else {
-            throw new PluginException("Only ConfigurableListableBeanFactory or ConfigurableApplicationContext types are handled");
+            throw new PluginException(
+                    "Only ConfigurableListableBeanFactory or ConfigurableApplicationContext types are handled");
         }
     }
 }
